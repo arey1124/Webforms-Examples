@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StpDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblStocks">
+    <Key>
+      <PropertyRef Name="stockId" />
+    </Key>
+    <Property Name="stockId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="stockName" Type="varchar" MaxLength="20" />
+    <Property Name="quantity" Type="int" />
+    <Property Name="quantity_remaining" Type="int" />
+    <Property Name="addedBy" Type="int" />
+    <Property Name="status" Type="char" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="tblTradeRequests">
+    <Key>
+      <PropertyRef Name="requestId" />
+    </Key>
+    <Property Name="requestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="uid" Type="int" />
+    <Property Name="requestType" Type="char" MaxLength="1" />
+    <Property Name="stockId" Type="int" />
+    <Property Name="requestQty" Type="int" />
+    <Property Name="remainingQty" Type="int" />
+    <Property Name="requestPrice" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="requestTime" Type="datetime" />
+    <Property Name="requestStatus" Type="char" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="tblUsers">
+    <Key>
+      <PropertyRef Name="uid" />
+    </Key>
+    <Property Name="uid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="userName" Type="varchar" MaxLength="100" />
+    <Property Name="password" Type="varchar" MaxLength="100" />
+    <Property Name="dateAdded" Type="datetime" />
+    <Property Name="roles" Type="char" MaxLength="1" />
+    <Property Name="fname" Type="varchar" MaxLength="20" />
+    <Property Name="lname" Type="varchar" MaxLength="20" />
+    <Property Name="email" Type="varchar" MaxLength="40" />
+    <Property Name="dob" Type="date" />
+    <Property Name="mobile" Type="bigint" />
+    <Property Name="address" Type="varchar" MaxLength="100" />
+    <Property Name="status" Type="char" MaxLength="1" />
+  </EntityType>
+  <Association Name="FK__tblStocks__added__1CF15040">
+    <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="0..1" />
+    <End Role="tblStocks" Type="Self.tblStocks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUsers">
+        <PropertyRef Name="uid" />
+      </Principal>
+      <Dependent Role="tblStocks">
+        <PropertyRef Name="addedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblTradeR__stock__286302EC">
+    <End Role="tblStocks" Type="Self.tblStocks" Multiplicity="0..1" />
+    <End Role="tblTradeRequests" Type="Self.tblTradeRequests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblStocks">
+        <PropertyRef Name="stockId" />
+      </Principal>
+      <Dependent Role="tblTradeRequests">
+        <PropertyRef Name="stockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblTradeReq__uid__276EDEB3">
+    <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="0..1" />
+    <End Role="tblTradeRequests" Type="Self.tblTradeRequests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUsers">
+        <PropertyRef Name="uid" />
+      </Principal>
+      <Dependent Role="tblTradeRequests">
+        <PropertyRef Name="uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="StpDBModelStoreContainer">
+    <EntitySet Name="tblStocks" EntityType="Self.tblStocks" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTradeRequests" EntityType="Self.tblTradeRequests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__tblStocks__added__1CF15040" Association="Self.FK__tblStocks__added__1CF15040">
+      <End Role="tblUsers" EntitySet="tblUsers" />
+      <End Role="tblStocks" EntitySet="tblStocks" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblTradeR__stock__286302EC" Association="Self.FK__tblTradeR__stock__286302EC">
+      <End Role="tblStocks" EntitySet="tblStocks" />
+      <End Role="tblTradeRequests" EntitySet="tblTradeRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblTradeReq__uid__276EDEB3" Association="Self.FK__tblTradeReq__uid__276EDEB3">
+      <End Role="tblUsers" EntitySet="tblUsers" />
+      <End Role="tblTradeRequests" EntitySet="tblTradeRequests" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
